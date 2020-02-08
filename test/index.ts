@@ -1,7 +1,10 @@
 import * as chai from 'chai';
-import Promise2 from '../src/promise';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
+chai.use(sinonChai);
 
 const assert = chai.assert;
+import Promise2 from '../src/promise';
 
 describe('Promise2', () => {
   it('is a Class', () => {
@@ -19,34 +22,28 @@ describe('Promise2', () => {
     assert.isFunction(promise.then);
   });
   it('runs "fn" passedin immediately', () => {
-    let called = false;
-    const promise = new Promise2(() => {
-      called = true;
-    });
-    assert.isTrue(called);
+    let fn = sinon.fake();
+    new Promise2(fn);
+    assert(fn.called);
   });
-  it('the "fn" passedin must has resolve and reject function', () => {
-    const promise = new Promise2((resolve, reject) => {
+  it('the "fn" passedin must has resolve and reject function', (done) => {
+    new Promise2((resolve, reject) => {
       assert.isFunction(resolve);
       assert.isFunction(reject);
+      done();
     });
   });
   it('promise.then(success): the success function is called when resolve is called', (done) => {
-    let called = false;
+    const success = sinon.fake();
     const promise = new Promise2((resolve, reject) => {
-      // success is not called
-      assert.isFalse(called);
+      assert.isFalse(success.called);
       resolve();
-      // success is called
       setTimeout(() => {
-        assert.isTrue(called);
+        assert.isTrue(success.called);
         done();
       });
-      console.log('code is run');
     });
     // @ts-ignore
-    promise.then(() => {
-      called = true;
-    });
+    promise.then(success);
   });
 });
