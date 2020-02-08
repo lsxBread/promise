@@ -1,0 +1,13 @@
+{
+  "name": "promise",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Shixun Liu <shixun.liu1023@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.2.8",
+    "@types/mocha": "^7.0.1",
+    "chai": "^4.2.0",
+    "mocha": "^7.0.1"
+  }
+}
