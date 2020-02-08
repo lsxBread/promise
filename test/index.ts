@@ -183,7 +183,7 @@ describe('Promise2', () => {
     //@ts-ignore
     assert(promise2 instanceof Promise2);
   });
-  it('2.2.7.1', (done) => {
+  it('2.2.7.1: string', (done) => {
     const promise1 = new Promise2((resolve, reject) => {
       resolve();
     });
@@ -195,6 +195,24 @@ describe('Promise2', () => {
       )
       .then((result) => {
         assert.equal(result, 'success');
+        done();
+      });
+  });
+  it('2.2.7.1: Promise', (done) => {
+    const promise1 = new Promise2((resolve, reject) => {
+      resolve();
+    });
+
+    promise1
+      .then(
+        () =>
+          new Promise2((resolve, reject) => {
+            resolve(123);
+          }),
+        () => {}
+      )
+      .then((result) => {
+        assert.equal(result, 123);
         done();
       });
   });
