@@ -71,9 +71,11 @@ describe('Promise2', () => {
     const promise = new Promise2((resolve) => {
       assert.isFalse(success.called);
       resolve(123);
+      resolve(123);
       setTimeout(() => {
         assert(promise.state === 'fullfilled');
         assert(success.called);
+        assert.isTrue(success.calledOnce);
         assert(success.calledWith(123));
         done();
       });

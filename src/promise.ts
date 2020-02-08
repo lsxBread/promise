@@ -5,6 +5,9 @@ class Promise2 {
 
   resolve = (result) => {
     setTimeout(() => {
+      if (this.state !== 'pending') {
+        return;
+      }
       this.state = 'fullfilled';
       if (typeof this.success === 'function') {
         this.success(result);
@@ -12,8 +15,11 @@ class Promise2 {
     }, 0);
   };
   reject = (reason) => {
-    this.state = 'rejected';
     setTimeout(() => {
+      if (this.state !== 'pending') {
+        return;
+      }
+      this.state = 'rejected';
       if (typeof this.fail === 'function') {
         this.fail(reason);
       }
