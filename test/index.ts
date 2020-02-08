@@ -46,4 +46,17 @@ describe('Promise2', () => {
     // @ts-ignore
     promise.then(success);
   });
+  it('promise.then(null, fail): the fail function is called when reject is called', (done) => {
+    const fail = sinon.fake();
+    const promise = new Promise2((resolve, reject) => {
+      assert.isFalse(fail.called);
+      reject();
+      setTimeout(() => {
+        assert.isTrue(fail.called);
+        done();
+      });
+    });
+    // @ts-ignore
+    promise.then(null, fail);
+  });
 });
