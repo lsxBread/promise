@@ -1,7 +1,6 @@
 class Promise2 {
-  success = null;
-  fail = null;
   state = 'pending';
+  callbacks = [];
 
   resolve = (result) => {
     setTimeout(() => {
@@ -9,9 +8,11 @@ class Promise2 {
         return;
       }
       this.state = 'fullfilled';
-      if (typeof this.success === 'function') {
-        this.success.call(undefined, result);
-      }
+      this.callbacks.forEach((handle) => {
+        if (typeof handle[0] === 'function') {
+          handle[0].call(undefined, result);
+        }
+      });
     }, 0);
   };
   reject = (reason) => {
@@ -20,9 +21,11 @@ class Promise2 {
         return;
       }
       this.state = 'rejected';
-      if (typeof this.fail === 'function') {
-        this.fail.call(undefined, reason);
-      }
+      this.callbacks.forEach((handle) => {
+        if (typeof handle[1] === 'function') {
+          handle[1].call(undefined, reason);
+        }
+      });
     }, 0);
   };
 
@@ -34,12 +37,14 @@ class Promise2 {
   }
 
   then(success?, fail?) {
+    const handle = [success, fail];
     if (typeof success === 'function') {
-      this.success = success;
+      handle[0] = success;
     }
     if (typeof fail === 'function') {
-      this.fail = fail;
+      handle[1] = fail;
     }
+    this.callbacks.push(handle);
   }
 }
 
