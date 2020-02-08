@@ -98,4 +98,30 @@ describe('Promise2', () => {
     });
     promise.then(null, fail);
   });
+  it('2.2.4: before my code finish running, not run the functio inside then', (done) => {
+    const success = sinon.fake();
+    const promise = new Promise2((resolve) => {
+      resolve();
+    });
+    promise.then(success);
+    console.log(1);
+    assert.isFalse(success.called);
+    setTimeout(() => {
+      assert.isTrue(success.called);
+      done();
+    }, 0);
+  });
+  it('2.2.4: fail: before my code finish running, not run the functio inside then', (done) => {
+    const fail = sinon.fake();
+    const promise = new Promise2((resolve, reject) => {
+      reject();
+    });
+    promise.then(null, fail);
+    console.log(1);
+    assert.isFalse(fail.called);
+    setTimeout(() => {
+      assert.isTrue(fail.called);
+      done();
+    }, 0);
+  });
 });
