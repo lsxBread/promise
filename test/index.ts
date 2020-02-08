@@ -59,4 +59,11 @@ describe('Promise2', () => {
     // @ts-ignore
     promise.then(null, fail);
   });
+  it('2.2.1', () => {
+    const promise = new Promise2((resolve) => {
+      resolve();
+    });
+    promise.then(false, null);
+    assert(1 === 1);
+  });
 });

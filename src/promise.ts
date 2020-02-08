@@ -1,14 +1,20 @@
 class Promise2 {
   success = null;
   fail = null;
+  state = 'pending';
+
   resolve = () => {
     setTimeout(() => {
-      this.success();
+      if (typeof this.success === 'function') {
+        this.success();
+      }
     }, 0);
   };
   reject = () => {
     setTimeout(() => {
-      this.fail();
+      if (typeof this.fail === 'function') {
+        this.fail();
+      }
     }, 0);
   };
 
@@ -19,9 +25,13 @@ class Promise2 {
     fn(this.resolve, this.reject);
   }
 
-  then(success, fail) {
-    this.success = success;
-    this.fail = fail;
+  then(success?, fail?) {
+    if (typeof success === 'function') {
+      this.success = success;
+    }
+    if (typeof fail === 'function') {
+      this.fail = fail;
+    }
   }
 }
 
