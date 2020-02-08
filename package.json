@@ -9,5 +9,8 @@
     "@types/mocha": "^7.0.1",
     "chai": "^4.2.0",
     "mocha": "^7.0.1"
+  },
+  "scripts": {
+    "test": "mocha -r ts-node/register test/index.ts"
   }
 }
