@@ -26,14 +26,14 @@ describe('Promise2', () => {
     new Promise2(fn);
     assert(fn.called);
   });
-  it('the "fn" passedin must has resolve and reject function', done => {
+  it('the "fn" passedin must has resolve and reject function', (done) => {
     new Promise2((resolve, reject) => {
       assert.isFunction(resolve);
       assert.isFunction(reject);
       done();
     });
   });
-  it('promise.then(success): the success function is called when resolve is called', done => {
+  it('promise.then(success): the success function is called when resolve is called', (done) => {
     const success = sinon.fake();
     const promise = new Promise2((resolve, reject) => {
       assert.isFalse(success.called);
@@ -46,7 +46,7 @@ describe('Promise2', () => {
     // @ts-ignore
     promise.then(success);
   });
-  it('promise.then(null, fail): the fail function is called when reject is called', done => {
+  it('promise.then(null, fail): the fail function is called when reject is called', (done) => {
     const fail = sinon.fake();
     const promise = new Promise2((resolve, reject) => {
       assert.isFalse(fail.called);
@@ -60,15 +60,15 @@ describe('Promise2', () => {
     promise.then(null, fail);
   });
   it('2.2.1', () => {
-    const promise = new Promise2(resolve => {
+    const promise = new Promise2((resolve) => {
       resolve();
     });
     promise.then(false, null);
     assert(1 === 1);
   });
-  it('2.2.2', done => {
+  it('2.2.2', (done) => {
     const success = sinon.fake();
-    const promise = new Promise2(resolve => {
+    const promise = new Promise2((resolve) => {
       assert.isFalse(success.called);
       resolve(123);
       resolve(123);
@@ -82,7 +82,7 @@ describe('Promise2', () => {
     });
     promise.then(success);
   });
-  it('2.2.3', done => {
+  it('2.2.3', (done) => {
     const fail = sinon.fake();
     const promise = new Promise2((resolve, reject) => {
       assert.isFalse(fail.called);
@@ -98,9 +98,9 @@ describe('Promise2', () => {
     });
     promise.then(null, fail);
   });
-  it('2.2.4: before my code finish running, not run the functio inside then', done => {
+  it('2.2.4: before my code finish running, not run the functio inside then', (done) => {
     const success = sinon.fake();
-    const promise = new Promise2(resolve => {
+    const promise = new Promise2((resolve) => {
       resolve();
     });
     promise.then(success);
@@ -111,7 +111,7 @@ describe('Promise2', () => {
       done();
     }, 0);
   });
-  it('2.2.4: fail: before my code finish running, not run the functio inside then', done => {
+  it('2.2.4: fail: before my code finish running, not run the functio inside then', (done) => {
     const fail = sinon.fake();
     const promise = new Promise2((resolve, reject) => {
       reject();
@@ -124,7 +124,7 @@ describe('Promise2', () => {
       done();
     }, 0);
   });
-  it('2.2.5', done => {
+  it('2.2.5', (done) => {
     const promise = new Promise2((resolve, reject) => {
       resolve();
     });
@@ -134,7 +134,7 @@ describe('Promise2', () => {
       done();
     });
   });
-  it('2.2.6', done => {
+  it('2.2.6', (done) => {
     const promise = new Promise2((resolve, reject) => {
       resolve();
     });
@@ -152,7 +152,7 @@ describe('Promise2', () => {
       done();
     });
   });
-  it('2.2.6: fail', done => {
+  it('2.2.6: fail', (done) => {
     const promise = new Promise2((resolve, reject) => {
       reject();
     });
@@ -182,5 +182,20 @@ describe('Promise2', () => {
 
     //@ts-ignore
     assert(promise2 instanceof Promise2);
+  });
+  it('2.2.7.1', (done) => {
+    const promise1 = new Promise2((resolve, reject) => {
+      resolve();
+    });
+
+    promise1
+      .then(
+        () => 'success',
+        () => {}
+      )
+      .then((result) => {
+        assert.equal(result, 'success');
+        done();
+      });
   });
 });
