@@ -82,4 +82,20 @@ describe('Promise2', () => {
     });
     promise.then(success);
   });
+  it('2.2.3', (done) => {
+    const fail = sinon.fake();
+    const promise = new Promise2((resolve, reject) => {
+      assert.isFalse(fail.called);
+      reject(123);
+      reject(123);
+      setTimeout(() => {
+        assert(promise.state === 'rejected');
+        assert(fail.called);
+        assert.isTrue(fail.calledOnce);
+        assert(fail.calledWith(123));
+        done();
+      });
+    });
+    promise.then(null, fail);
+  });
 });
