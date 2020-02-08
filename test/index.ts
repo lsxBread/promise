@@ -66,4 +66,18 @@ describe('Promise2', () => {
     promise.then(false, null);
     assert(1 === 1);
   });
+  it('2.2.2', (done) => {
+    const success = sinon.fake();
+    const promise = new Promise2((resolve) => {
+      assert.isFalse(success.called);
+      resolve(123);
+      setTimeout(() => {
+        assert(promise.state === 'fullfilled');
+        assert(success.called);
+        assert(success.calledWith(123));
+        done();
+      });
+    });
+    promise.then(success);
+  });
 });
