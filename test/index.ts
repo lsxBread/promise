@@ -124,4 +124,14 @@ describe('Promise2', () => {
       done();
     }, 0);
   });
+  it('2.2.5', (done) => {
+    const promise = new Promise2((resolve, reject) => {
+      resolve();
+    });
+    promise.then(function() {
+      'use strict';
+      assert(this === undefined);
+      done();
+    });
+  });
 });
