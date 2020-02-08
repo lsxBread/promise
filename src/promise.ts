@@ -2,26 +2,26 @@ class Promise2 {
   state = 'pending';
   callbacks = [];
 
-  resolve = (result) => {
+  resolve = result => {
     setTimeout(() => {
       if (this.state !== 'pending') {
         return;
       }
       this.state = 'fullfilled';
-      this.callbacks.forEach((handle) => {
+      this.callbacks.forEach(handle => {
         if (typeof handle[0] === 'function') {
           handle[0].call(undefined, result);
         }
       });
     }, 0);
   };
-  reject = (reason) => {
+  reject = reason => {
     setTimeout(() => {
       if (this.state !== 'pending') {
         return;
       }
       this.state = 'rejected';
-      this.callbacks.forEach((handle) => {
+      this.callbacks.forEach(handle => {
         if (typeof handle[1] === 'function') {
           handle[1].call(undefined, reason);
         }
@@ -45,6 +45,8 @@ class Promise2 {
       handle[1] = fail;
     }
     this.callbacks.push(handle);
+
+    return new Promise2(() => {});
   }
 }
 
