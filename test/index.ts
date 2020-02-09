@@ -41,7 +41,7 @@ describe('Promise2', () => {
       setTimeout(() => {
         assert.isTrue(success.called);
         done();
-      });
+      }, 10);
     });
     // @ts-ignore
     promise.then(success);
@@ -54,7 +54,7 @@ describe('Promise2', () => {
       setTimeout(() => {
         assert.isTrue(fail.called);
         done();
-      });
+      }, 10);
     });
     // @ts-ignore
     promise.then(null, fail);
@@ -78,7 +78,7 @@ describe('Promise2', () => {
         assert.isTrue(success.calledOnce);
         assert(success.calledWith(123));
         done();
-      });
+      }, 10);
     });
     promise.then(success);
   });
@@ -94,7 +94,7 @@ describe('Promise2', () => {
         assert.isTrue(fail.calledOnce);
         assert(fail.calledWith(123));
         done();
-      });
+      }, 10);
     });
     promise.then(null, fail);
   });
@@ -109,7 +109,7 @@ describe('Promise2', () => {
     setTimeout(() => {
       assert.isTrue(success.called);
       done();
-    }, 0);
+    }, 10);
   });
   it('2.2.4: fail: before my code finish running, not run the functio inside then', (done) => {
     const fail = sinon.fake();
@@ -122,7 +122,7 @@ describe('Promise2', () => {
     setTimeout(() => {
       assert.isTrue(fail.called);
       done();
-    }, 0);
+    }, 10);
   });
   it('2.2.5', (done) => {
     const promise = new Promise2((resolve, reject) => {
@@ -150,7 +150,7 @@ describe('Promise2', () => {
       assert(callbacks[1].calledAfter(callbacks[0]));
       assert(callbacks[2].calledAfter(callbacks[1]));
       done();
-    });
+    }, 10);
   });
   it('2.2.6: fail', (done) => {
     const promise = new Promise2((resolve, reject) => {
@@ -168,7 +168,7 @@ describe('Promise2', () => {
       assert(callbacks[1].calledAfter(callbacks[0]));
       assert(callbacks[2].calledAfter(callbacks[1]));
       done();
-    });
+    }, 10);
   });
   it('2.2.7: "then" must return promise', () => {
     const promise = new Promise2((resolve, reject) => {
@@ -214,6 +214,63 @@ describe('Promise2', () => {
     setTimeout(() => {
       assert(fn.called);
       done();
-    }, 0);
+    }, 10);
+  });
+  it('2.2.7.2.1: x is Promise2 instance and fail', (done) => {
+    const promise1 = new Promise2((resolve, reject) => {
+      resolve();
+    });
+    const fn = sinon.fake();
+    promise1
+      .then(
+        () =>
+          new Promise2((resolve, reject) => {
+            reject();
+          }),
+        () => {}
+      )
+      .then(null, fn);
+    setTimeout(() => {
+      assert(fn.called);
+      done();
+    }, 10);
+  });
+  it('2.2.7.2.2: second x is Promise2', (done) => {
+    const promise1 = new Promise2((resolve, reject) => {
+      reject();
+    });
+    const fn = sinon.fake();
+    promise1
+      .then(
+        () => {},
+        () =>
+          new Promise2((resolve, reject) => {
+            resolve();
+          })
+      )
+      .then(fn);
+    setTimeout(() => {
+      assert(fn.called);
+      done();
+    }, 10);
+  });
+  it('2.2.7.2.2: second x is Promise2 and fail', (done) => {
+    const promise1 = new Promise2((resolve, reject) => {
+      reject();
+    });
+    const fn = sinon.fake();
+    promise1
+      .then(
+        () => {},
+        () =>
+          new Promise2((resolve, reject) => {
+            reject();
+          })
+      )
+      .then(null, fn);
+    setTimeout(() => {
+      assert(fn.called);
+      done();
+    }, 10);
   });
 });

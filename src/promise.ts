@@ -13,7 +13,7 @@ class Promise2 {
           const x = handle[0].call(undefined, result);
           handle[2].resolveWith(x);
         }
-      });
+      }, 0);
     });
   };
   reject = (reason) => {
@@ -28,7 +28,7 @@ class Promise2 {
           handle[2].resolveWith(x);
         }
       });
-    });
+    }, 0);
   };
 
   constructor(fn) {
