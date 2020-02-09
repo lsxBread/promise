@@ -183,4 +183,37 @@ describe('Promise2', () => {
     //@ts-ignore
     assert(promise2 instanceof Promise2);
   });
+  it('2.2.7.1: x is string', (done) => {
+    const promise1 = new Promise2((resolve, reject) => {
+      resolve();
+    });
+    promise1
+      .then(
+        () => 'success',
+        () => {}
+      )
+      .then((result) => {
+        assert.equal(result, 'success');
+        done();
+      });
+  });
+  it('2.2.7.2: x is Promise2 instance', (done) => {
+    const promise1 = new Promise2((resolve, reject) => {
+      resolve();
+    });
+    const fn = sinon.fake();
+    promise1
+      .then(
+        () =>
+          new Promise2((resolve, reject) => {
+            resolve();
+          }),
+        () => {}
+      )
+      .then(fn);
+    setTimeout(() => {
+      assert(fn.called);
+      done();
+    }, 10);
+  });
 });
