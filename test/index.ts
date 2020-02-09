@@ -214,6 +214,6 @@ describe('Promise2', () => {
     setTimeout(() => {
       assert(fn.called);
       done();
-    }, 10);
+    }, 0);
   });
 });

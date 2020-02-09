@@ -3,7 +3,7 @@ class Promise2 {
   callbacks = [];
 
   resolve = (result) => {
-    setTimeout(() => {
+    setImmediate(() => {
       if (this.state !== 'pending') {
         return;
       }
@@ -14,10 +14,10 @@ class Promise2 {
           handle[2].resolveWith(x);
         }
       });
-    }, 0);
+    });
   };
   reject = (reason) => {
-    setTimeout(() => {
+    setImmediate(() => {
       if (this.state !== 'pending') {
         return;
       }
@@ -28,7 +28,7 @@ class Promise2 {
           handle[2].resolveWith(x);
         }
       });
-    }, 0);
+    });
   };
 
   constructor(fn) {
